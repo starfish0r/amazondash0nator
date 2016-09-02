@@ -1,0 +1,1 @@
+mvn install:install-file -Dfile=jnetpcap.jar -DgroupId=jnetpcapgroupid -DartifactId=jnetpcapartifactid -Dversion=1.0.0 -Dpackaging=jar
