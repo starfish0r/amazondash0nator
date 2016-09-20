@@ -1,12 +1,10 @@
-package de.cabraham.sniffer;
+package de.cabraham.sniffer.event;
 
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-import de.cabraham.sniffer.ARPMacAddressEventonator.MacAddressAwareRunnable;
-
-class WakeOnLanEvent implements MacAddressAwareRunnable {
+public class WakeOnLanRunnable implements MacAddressAwareRunnable {
 
   private static final int PORT = 9;
   private static final String IPNETWORK = "192.168.1.255"; // todo: to config file
@@ -60,7 +58,4 @@ class WakeOnLanEvent implements MacAddressAwareRunnable {
     m_macAdress = macAddress;
   }
   
-  public static void main(String[] args) {
-    new WakeOnLanEvent().run();
-  }
 }

@@ -8,7 +8,9 @@ import org.jnetpcap.packet.PcapPacket;
 import org.jnetpcap.packet.PcapPacketHandler;
 import org.jnetpcap.protocol.network.Arp;
 
-final class ARPMacAddressEventonator implements PcapPacketHandler<String> {
+import de.cabraham.sniffer.event.MacAddressAwareRunnable;
+
+public final class ARPMacAddressEventonator implements PcapPacketHandler<String> {
   private static final HashMap<String,String> dict = new HashMap<>();
   
   private final Arp arp = new Arp();
@@ -25,7 +27,7 @@ final class ARPMacAddressEventonator implements PcapPacketHandler<String> {
   
   ExecutorService s = Executors.newCachedThreadPool();
 
-  ARPMacAddressEventonator(String macAdress, MacAddressAwareRunnable todo) {
+  public ARPMacAddressEventonator(String macAdress, MacAddressAwareRunnable todo) {
     m_macAdress = macAdress;
     m_todo = todo;
   }
@@ -34,7 +36,7 @@ final class ARPMacAddressEventonator implements PcapPacketHandler<String> {
   @Override
   public void nextPacket(PcapPacket packet, String user) {
     if (packet.hasHeader(arp)) {
-      String sourceMac = Main.toString(arp.sha());
+      String sourceMac = Util.macAddresstoString(arp.sha());
       //System.out.println("arp packet: " + Main.toString(arp.getHeader()));
       System.out.println("ARP packet from " + sourceMac + " "+dict.get(sourceMac));
       if(m_macAdress.equals(sourceMac)){
@@ -42,8 +44,5 @@ final class ARPMacAddressEventonator implements PcapPacketHandler<String> {
         s.execute(m_todo);
       }
     }
-  }
-  public static interface MacAddressAwareRunnable extends Runnable {
-    public void setMacAdress(String macAddress);
   }
 }

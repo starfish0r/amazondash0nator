@@ -13,11 +13,17 @@
       <groupId>jnetpcapgroupid</groupId>
       <artifactId>jnetpcapartifactid</artifactId>
       <version>1.0.0</version>
-      <!-- <scope>system</scope>
-      <systemPath>${basedir}/jnetpcap.jar</systemPath> -->
+      <scope>system</scope>
+      <systemPath>${basedir}/jnetpcap.jar</systemPath>
     </dependency>
     <!-- <dependency> <groupId>jnetpcap</groupId> <artifactId>jnetpcap</artifactId> 
       <version>1.4.r1425-1f</version> </dependency> -->
+      
+    <dependency>
+      <groupId>org.codehaus.plexus</groupId>
+      <artifactId>plexus-utils</artifactId>
+      <version>3.0.24</version>
+    </dependency>
   </dependencies>
 
   <build>
