@@ -20,7 +20,10 @@ public class TCPDumpImpl extends PacketSniffer {
     NonTerminatingCommandLine nt = new NonTerminatingCommandLine();
     nt.setExecutable("/bin/bash");
     nt.createArg().setValue("-c");
-    nt.createArg().setValue("'tcpdump -eqtnni eth0 arp'");
+    nt.createArg().setValue("tcpdump");
+    nt.createArg().setValue("-eqtnni");
+    nt.createArg().setValue("eth0");
+    nt.createArg().setValue("arp");
 
     FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[tcpdump] ");
     
