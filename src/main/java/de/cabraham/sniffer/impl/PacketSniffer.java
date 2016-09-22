@@ -3,7 +3,7 @@ package de.cabraham.sniffer.impl;
 import java.util.Scanner;
 
 import de.cabraham.sniffer.SniffingException;
-import de.cabraham.sniffer.event.MacAddressAwareRunnable;
+import de.cabraham.sniffer.event.EventCallback;
 
 public abstract class PacketSniffer {
   
@@ -18,7 +18,7 @@ public abstract class PacketSniffer {
   
   
   public abstract String chooseMacAdress() throws SniffingException;
-  public abstract void startSniffing(String macAddress, MacAddressAwareRunnable todo) throws SniffingException;
+  public abstract void startSniffing(String macAddress, EventCallback<Runnable> eventCallback) throws SniffingException;
 
 
 }

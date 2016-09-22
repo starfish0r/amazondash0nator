@@ -1,24 +1,15 @@
 package de.cabraham.sniffer;
 
-import java.io.FileInputStream;
-
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
 import java.util.Scanner;
 import java.util.Set;
 
-import org.jnetpcap.Pcap;
-import org.jnetpcap.PcapIf;
-
+import de.cabraham.sniffer.event.EventCallback;
 import de.cabraham.sniffer.event.WakeOnLanRunnable;
 import de.cabraham.sniffer.impl.PacketSniffer;
 import de.cabraham.sniffer.impl.pcap.PCapImpl;
 import de.cabraham.sniffer.impl.tcpdump.TCPDumpImpl;
+import de.cabraham.sniffer.util.Util;
 
 
 public class Main {
@@ -29,7 +20,7 @@ public class Main {
   public static void main(String[] args) throws SniffingException {
     try {
       new Main().start();
-    }catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -61,7 +52,7 @@ public class Main {
     if(macAdress==null){
       System.out.println("There's no dash mac adress :/");
     } else {
-      impl.startSniffing(macAdress, new WakeOnLanRunnable());
+      impl.startSniffing(macAdress, new EventCallback<Runnable>(new WakeOnLanRunnable()));
     }
     
     System.out.println("bye!");

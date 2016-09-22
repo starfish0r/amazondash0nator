@@ -4,7 +4,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
-public class WakeOnLanRunnable implements MacAddressAwareRunnable {
+public class WakeOnLanRunnable implements Runnable {
 
   private static final int PORT = 9;
   private static final String IPNETWORK = "192.168.1.255"; // todo: to config file
@@ -53,9 +53,5 @@ public class WakeOnLanRunnable implements MacAddressAwareRunnable {
     }
   }
 
-  @Override
-  public void setMacAdress(String macAddress) {
-    m_macAdress = macAddress;
-  }
   
 }

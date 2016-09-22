@@ -8,11 +8,10 @@ import java.util.Set;
 import org.jnetpcap.Pcap;
 import org.jnetpcap.PcapIf;
 
-import de.cabraham.sniffer.ARPMacAddressEventonator;
 import de.cabraham.sniffer.SniffingException;
-import de.cabraham.sniffer.Util;
-import de.cabraham.sniffer.event.MacAddressAwareRunnable;
+import de.cabraham.sniffer.event.EventCallback;
 import de.cabraham.sniffer.impl.PacketSniffer;
+import de.cabraham.sniffer.util.Util;
 
 public class PCapImpl extends PacketSniffer {
 
@@ -27,9 +26,9 @@ public class PCapImpl extends PacketSniffer {
   }
 
   @Override
-  public void startSniffing(String macAddress, MacAddressAwareRunnable todo) throws SniffingException {
+  public void startSniffing(String macAddress, EventCallback<Runnable> callback) throws SniffingException {
     String interfaceName = getInterfaceName();
-    startMainSniffingLoop(interfaceName, macAddress, todo);
+    startMainSniffingLoop(interfaceName, macAddress, callback);
   }
   
   /*main{
@@ -48,12 +47,12 @@ public class PCapImpl extends PacketSniffer {
 
   
   
-  private void startMainSniffingLoop(String interfaceName, String macAdress, MacAddressAwareRunnable todo) throws SniffingException {
+  private void startMainSniffingLoop(String interfaceName, String macAdress, EventCallback<Runnable> callback) throws SniffingException {
     Pcap pcap = openPcap(interfaceName);
     Thread t = new Thread(new Runnable() {
       @Override
       public void run() {
-        pcap.loop(Pcap.LOOP_INFINITE, new ARPMacAddressEventonator(macAdress, todo), "");
+        pcap.loop(Pcap.LOOP_INFINITE, new ARPMacAddressPcapPacketHandler(macAdress, callback), "");
       }
     });
     t.start();

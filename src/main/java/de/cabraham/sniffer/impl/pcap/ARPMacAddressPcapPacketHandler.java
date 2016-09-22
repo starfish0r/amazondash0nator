@@ -1,22 +1,20 @@
-package de.cabraham.sniffer;
+package de.cabraham.sniffer.impl.pcap;
 
 import java.util.HashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import org.jnetpcap.packet.PcapPacket;
 import org.jnetpcap.packet.PcapPacketHandler;
 import org.jnetpcap.protocol.network.Arp;
 
-import de.cabraham.sniffer.event.MacAddressAwareRunnable;
+import de.cabraham.sniffer.event.EventCallback;
+import de.cabraham.sniffer.util.Util;
 
-public final class ARPMacAddressEventonator implements PcapPacketHandler<String> {
+public final class ARPMacAddressPcapPacketHandler implements PcapPacketHandler<String> {
   private static final HashMap<String,String> dict = new HashMap<>();
   
   private final Arp arp = new Arp();
-  //private volatile boolean m_stop = false;
   private final String m_macAdress;
-  private MacAddressAwareRunnable m_todo;
+  private EventCallback<Runnable> m_callback;
   
   static{
     dict.put("74 D4 35 FE A9 60", "starfish2");
@@ -25,11 +23,10 @@ public final class ARPMacAddressEventonator implements PcapPacketHandler<String>
     dict.put("9C FC 01 66 F3 77", "Julia iPhone 6");
   }
   
-  ExecutorService s = Executors.newCachedThreadPool();
 
-  public ARPMacAddressEventonator(String macAdress, MacAddressAwareRunnable todo) {
+  public ARPMacAddressPcapPacketHandler(String macAdress, EventCallback<Runnable> callback) {
     m_macAdress = macAdress;
-    m_todo = todo;
+    m_callback = callback;
   }
 
 
@@ -40,8 +37,8 @@ public final class ARPMacAddressEventonator implements PcapPacketHandler<String>
       //System.out.println("arp packet: " + Main.toString(arp.getHeader()));
       System.out.println("ARP packet from " + sourceMac + " "+dict.get(sourceMac));
       if(m_macAdress.equals(sourceMac)){
-        m_todo.setMacAdress(sourceMac);
-        s.execute(m_todo);
+        //m_todo.setMacAdress(sourceMac);
+        m_callback.callback();
       }
     }
   }
