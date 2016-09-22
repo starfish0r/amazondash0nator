@@ -53,6 +53,12 @@ public class Util {
     return mac.replaceAll("[- ]", ":").toLowerCase();
   }
 
+  public static void threadSleep(long l) {
+    try {
+      Thread.sleep(l);
+    } catch (InterruptedException e) {}
+  }
+
 
 
 

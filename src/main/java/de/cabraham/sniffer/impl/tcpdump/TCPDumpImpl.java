@@ -11,6 +11,7 @@ import de.cabraham.sniffer.SniffingException;
 import de.cabraham.sniffer.event.EventCallback;
 import de.cabraham.sniffer.impl.PacketSniffer;
 import de.cabraham.sniffer.util.NonTerminatingCommandLine;
+import de.cabraham.sniffer.util.Util;
 
 public class TCPDumpImpl extends PacketSniffer {
 
@@ -18,7 +19,8 @@ public class TCPDumpImpl extends PacketSniffer {
   public String chooseMacAdress() throws SniffingException {
     NonTerminatingCommandLine nt = new NonTerminatingCommandLine();
     nt.setExecutable("/bin/bash");
-    nt.createArg().setLine("-c tcpdump -eqtnni eth0 arp");
+    nt.createArg().setValue("-c");
+    nt.createArg().setValue("tcpdump -eqtnni eth0 arp");
 
     FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[tcpdump] ");
     
@@ -33,6 +35,8 @@ public class TCPDumpImpl extends PacketSniffer {
     } while(nt.isAlive() && !getStdIn().nextLine().equals("stop"));
     nt.terminate();
     
+    Util.threadSleep(1000L);
+    System.out.println();
     return chooseOne(out.getCapturedMacs());
   }
 
