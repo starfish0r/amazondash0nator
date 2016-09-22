@@ -6,12 +6,11 @@ import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.Commandline;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.codehaus.plexus.util.cli.StreamFeeder;
-import org.codehaus.plexus.util.cli.StreamPumper;
 
 public class NonTerminatingCommandLine extends Commandline {
   private Process m_nonTerminatingProcess;
   private StreamFeeder m_inputFeeder;
-  private StreamPumper m_outputPumper, m_errorPumper;
+  private DStreamPumper m_outputPumper, m_errorPumper;
   
   public void terminate(){
     if(m_nonTerminatingProcess != null){
@@ -26,10 +25,9 @@ public class NonTerminatingCommandLine extends Commandline {
   public void execute(final InputStream systemIn, final StreamConsumer systemOut, final StreamConsumer systemErr) throws CommandLineException {
     m_nonTerminatingProcess = this.execute();
   
-    
     m_inputFeeder = systemIn != null ? new StreamFeeder(systemIn, m_nonTerminatingProcess.getOutputStream()) : null;
-    m_outputPumper = new StreamPumper(m_nonTerminatingProcess.getInputStream(), systemOut);
-    m_errorPumper = new StreamPumper(m_nonTerminatingProcess.getErrorStream(), systemErr);
+    m_outputPumper = new DStreamPumper(m_nonTerminatingProcess.getInputStream(), systemOut);
+    m_errorPumper = new DStreamPumper(m_nonTerminatingProcess.getErrorStream(), systemErr);
 
     if (m_inputFeeder != null) {
       m_inputFeeder.start();
