@@ -18,12 +18,12 @@ public class TCPDumpImpl extends PacketSniffer {
   @Override
   public String chooseMacAdress() throws SniffingException {
     NonTerminatingCommandLine nt = new NonTerminatingCommandLine();
-    nt.setExecutable("/bin/bash");
-    nt.createArg().setValue("-c");
-    nt.createArg().setValue("tcpdump");
+    nt.setExecutable("tcpdump");
+    nt.createArg().setLine("-eqtnni eth0 arp");
+    /*nt.createArg().setValue("tcpdump");
     nt.createArg().setValue("-eqtnni");
     nt.createArg().setValue("eth0");
-    nt.createArg().setValue("arp");
+    nt.createArg().setValue("arp");*/
 
     FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[tcpdump] ");
     
