@@ -49,9 +49,11 @@ public class DStreamPumper extends AbstractStreamHandler {
     int count = -1;
     try {
       while(true){
+        inStream.notifyAll();
         while(inStream.available()==0){
           Util.threadSleep(10l);
         }
+        System.out.println("available: "+inStream.available());
         if((count = inReader.read(buf)) == -1){
           break;
         }
