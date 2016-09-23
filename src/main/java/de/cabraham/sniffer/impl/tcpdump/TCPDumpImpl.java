@@ -1,5 +1,6 @@
 package de.cabraham.sniffer.impl.tcpdump;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -33,8 +34,17 @@ public class TCPDumpImpl extends PacketSniffer {
       throw new SniffingException("exception executing commandline", e);
     }
     
+    
     do {
       System.out.println("type stop to stop");
+      try {
+        while(System.in.available()==0){
+          Thread.yield();
+          Util.threadSleep(100l);
+        }
+      } catch (IOException e) {
+        throw new SniffingException(null, e);
+      }
     } while(nt.isAlive() && !getStdIn().nextLine().equals("stop"));
     nt.terminate();
     
