@@ -45,4 +45,8 @@ public class NonTerminatingProcess {
       m_errorPumper.start();
     }
   }
+  
+  public void inte(){
+    m_outputPumper.interrupt();
+  }
 }

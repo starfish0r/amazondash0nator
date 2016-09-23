@@ -37,6 +37,7 @@ public class DStreamPumper extends AbstractStreamHandler {
     this.in = /*new BufferedReader(*/new InputStreamReader(in)/*, SIZE)*/;
     this.out = writer;
     this.consumer = consumer;
+    setDaemon(true);
   }
 
   public void run() {
@@ -105,4 +106,5 @@ public class DStreamPumper extends AbstractStreamHandler {
       consumer.consumeLine(line);
     }
   }
+  
 }

@@ -40,7 +40,9 @@ public class TCPDumpImpl extends PacketSniffer {
       try {
         while(System.in.available()==0){
           Thread.yield();
-          Util.threadSleep(100l);
+          Util.threadSleep(1000l);
+          System.out.println("y");
+          nt.inte();
         }
       } catch (IOException e) {
         throw new SniffingException(null, e);
