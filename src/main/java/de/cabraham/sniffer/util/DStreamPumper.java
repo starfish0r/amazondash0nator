@@ -10,15 +10,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 
-/**
- * Class to pump the error stream during Process's runtime. Copied from the Ant
- * built-in task.
- *
- * @author <a href="mailto:fvancea@maxiq.com">Florin Vancea </a>
- * @author <a href="mailto:pj@thoughtworks.com">Paul Julius </a>
- * @version $Id$
- * @since June 11, 2001
- */
 public class DStreamPumper extends AbstractStreamHandler {
   private final BufferedReader in;
 
@@ -60,12 +51,12 @@ public class DStreamPumper extends AbstractStreamHandler {
             consumeLine(line);
           }
         } catch (Exception t) {
+          t.printStackTrace();
           exception = t;
         }
 
         if (out != null) {
           out.println(line);
-
           out.flush();
         }
       }
@@ -73,10 +64,8 @@ public class DStreamPumper extends AbstractStreamHandler {
       exception = e;
     } finally {
       IOUtil.close(in);
-
       synchronized (this) {
         setDone();
-
         this.notifyAll();
       }
     }

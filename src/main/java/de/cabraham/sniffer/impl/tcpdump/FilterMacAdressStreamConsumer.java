@@ -29,6 +29,7 @@ public class FilterMacAdressStreamConsumer implements StreamConsumer {
       m_macs.add(Util.toStandardMac(mac));
     }
     System.out.println(m_prefix+line);
+    System.out.flush();
   }
   
   public Set<String> getCapturedMacs(){

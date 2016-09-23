@@ -35,59 +35,5 @@ public class NonTerminatingCommandLine extends Commandline {
 
     m_outputPumper.start();
     m_errorPumper.start();
-    /*return new CommandLineCallable() {
-      public Integer call() throws CommandLineException {
-        try {
-          int returnValue;
-          if (timeoutInSeconds <= 0) {
-            returnValue = p.waitFor();
-          } else {
-            long now = System.currentTimeMillis();
-            long timeoutInMillis = 1000L * timeoutInSeconds;
-            long finish = now + timeoutInMillis;
-            while (CommandLineUtils.isAlive(p) && (System.currentTimeMillis() < finish)) {
-              Thread.sleep(10);
-            }
-            if (CommandLineUtils.isAlive(p)) {
-              throw new InterruptedException("Process timeout out after " + timeoutInSeconds + " seconds");
-            }
-            returnValue = p.exitValue();
-          }
-
-          CommandLineUtils.waitForAllPumpers(inputFeeder, outputPumper, errorPumper);
-
-          if (outputPumper.getException() != null) {
-            throw new CommandLineException("Error inside systemOut parser", outputPumper.getException());
-          }
-
-          if (errorPumper.getException() != null) {
-            throw new CommandLineException("Error inside systemErr parser", errorPumper.getException());
-          }
-
-          return returnValue;
-        } catch (InterruptedException ex) {
-          if (inputFeeder != null) {
-            inputFeeder.disable();
-          }
-          outputPumper.disable();
-          errorPumper.disable();
-          throw new CommandLineTimeOutException("Error while executing external command, process killed.", ex);
-        } finally {
-          ShutdownHookUtils.removeShutdownHook(processHook);
-
-          processHook.run();
-
-          if (inputFeeder != null) {
-            inputFeeder.close();
-          }
-
-          outputPumper.close();
-
-          errorPumper.close();
-        }
-      }
-    };*/
   }
-
-  
 }
