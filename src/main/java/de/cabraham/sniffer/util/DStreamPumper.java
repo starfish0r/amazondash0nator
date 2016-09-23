@@ -22,7 +22,7 @@ public class DStreamPumper extends AbstractStreamHandler {
 
   private InputStream inStream;
 
-  private static final int SIZE = 1024;
+  private static final int SIZE = 10;
 
   public DStreamPumper(InputStream in) {
     this(in, (StreamConsumer) null);
