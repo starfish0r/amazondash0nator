@@ -40,7 +40,6 @@ public class DStreamPumper extends AbstractStreamHandler {
   }
 
   public void run() {
-    //Zerhacker z = new Zerhacker();
     char[] buf = new char[SIZE];
     int count = -1;
     //StringBuilder sb = new StringBuilder();
@@ -48,11 +47,11 @@ public class DStreamPumper extends AbstractStreamHandler {
       while((count = in.read(buf)) != -1){
         //this assumes a whole line is read... i know.
         String strRead = new String(Arrays.copyOfRange(buf, 0, count));
-        consumeLine(strRead);
         if (out != null) {
           out.println(strRead);
           out.flush();
         }
+        consumeLine(strRead);
       }
       
       /*for (String line = in.readLine(); line != null; line = in.readLine()) {
@@ -98,6 +97,8 @@ public class DStreamPumper extends AbstractStreamHandler {
   }
 
   private void consumeLine(String line) {
+    System.out.println("disabled="+isDisabled()+", line="+line+", consumer="+consumer);
+    
     if (consumer != null && !isDisabled()) {
       consumer.consumeLine(line);
     }

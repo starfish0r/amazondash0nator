@@ -1,9 +1,6 @@
 package de.cabraham.sniffer.util;
 
-import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.UnsupportedEncodingException;
 
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.Commandline;
