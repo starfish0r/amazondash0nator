@@ -69,8 +69,8 @@ public class TCPDumpImpl extends PacketSniffer {
   @Override
   public void startSniffing(String macAddress, EventCallback<Runnable> callback) throws SniffingException {
     NonTerminatingCommandLine nt = new NonTerminatingCommandLine();
-    nt.setExecutable("/bin/bash");
-    nt.createArg().setLine("-c tcpdump -eqtnni eth0 ether host " + macAddress);
+    nt.setExecutable("tcpdump");
+    nt.createArg().setLine("-eqtnni eth0 ether host " + macAddress);
     ReactToMacAdressStreamConsumer cons = new ReactToMacAdressStreamConsumer(macAddress, callback);
     try {
       nt.execute(null, cons, cons);

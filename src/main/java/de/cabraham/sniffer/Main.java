@@ -44,8 +44,7 @@ public class Main {
     String macAdress = Util.getProperties().getProperty("dashMacAdress", null);
     if(macAdress==null){
       String mac = impl.chooseMacAdress();
-      Util.getProperties().setProperty("dashMacAdress", mac);
-      Util.saveProperties();
+      Util.setAndSaveProperty("dashMacAdress", mac);
     }
     
     macAdress = Util.getProperties().getProperty("dashMacAdress", null);

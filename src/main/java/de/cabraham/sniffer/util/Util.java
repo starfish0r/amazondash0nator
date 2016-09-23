@@ -11,6 +11,9 @@ public class Util {
   
   private static final String S_PROPERTIES_FILENAME = "settings.properties";
   private static final Properties m_props = new Properties();
+  {
+    m_props.clear();
+  }
   
   public final static Pattern PATTERN_MAC_ADDRESS = Pattern.compile("[0-z]{2}[-: ][0-z]{2}[-: ][0-z]{2}[-: ][0-z]{2}[-: ][0-z]{2}[-: ][0-z]{2}");
 

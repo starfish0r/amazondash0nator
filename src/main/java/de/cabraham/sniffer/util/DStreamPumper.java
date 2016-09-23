@@ -9,9 +9,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.util.Arrays;
 
 public class DStreamPumper extends AbstractStreamHandler {
-  private final BufferedReader in;
+  private final InputStreamReader in;
 
   private final StreamConsumer consumer;
 
@@ -19,7 +20,7 @@ public class DStreamPumper extends AbstractStreamHandler {
 
   private volatile Exception exception = null;
 
-  private static final int SIZE = 80;
+  private static final int SIZE = 1024;
 
   public DStreamPumper(InputStream in) {
     this(in, (StreamConsumer) null);
@@ -34,14 +35,28 @@ public class DStreamPumper extends AbstractStreamHandler {
   }
 
   public DStreamPumper(InputStream in, PrintWriter writer, StreamConsumer consumer) {
-    this.in = new BufferedReader(new InputStreamReader(in), SIZE);
+    this.in = /*new BufferedReader(*/new InputStreamReader(in)/*, SIZE)*/;
     this.out = writer;
     this.consumer = consumer;
   }
 
   public void run() {
+    //Zerhacker z = new Zerhacker();
+    char[] buf = new char[SIZE];
+    int count = -1;
+    //StringBuilder sb = new StringBuilder();
     try {
-      for (String line = in.readLine(); line != null; line = in.readLine()) {
+      while((count = in.read(buf)) != -1){
+        //this assumes a whole line is read... i know.
+        String strRead = new String(Arrays.copyOfRange(buf, 0, count));
+        consumeLine(strRead);
+        if (out != null) {
+          out.println(strRead);
+          out.flush();
+        }
+      }
+      
+      /*for (String line = in.readLine(); line != null; line = in.readLine()) {
         System.out.println("[d] read a line: " + line);
         try {
           if (exception == null) {
@@ -56,7 +71,7 @@ public class DStreamPumper extends AbstractStreamHandler {
           out.println(line);
           out.flush();
         }
-      }
+      }*/
     } catch (IOException e) {
       e.printStackTrace();
       exception = e;
