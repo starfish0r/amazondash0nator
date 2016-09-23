@@ -1,27 +1,26 @@
 package de.cabraham.sniffer.impl.tcpdump;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import org.codehaus.plexus.util.cli.CommandLineException;
-
 import de.cabraham.sniffer.SniffingException;
 import de.cabraham.sniffer.event.EventCallback;
 import de.cabraham.sniffer.impl.PacketSniffer;
-import de.cabraham.sniffer.util.NonTerminatingCommandLine;
+import de.cabraham.sniffer.util.NonTerminatingProcess;
 import de.cabraham.sniffer.util.Util;
 
 public class TCPDumpImpl extends PacketSniffer {
 
   @Override
   public String chooseMacAdress() throws SniffingException {
-    NonTerminatingCommandLine nt = new NonTerminatingCommandLine();
+    NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("ping", "google.de"));
     /*nt.setExecutable("tcpdump");
     nt.createArg().setLine("-eqtnni eth0 arp");*/
-    nt.setExecutable("ping");
-    nt.createArg().setLine("google.de");
+    /*nt.setExecutable("ping");
+    nt.createArg().setLine("google.de");*/
     
 
     FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[out] ");
@@ -29,7 +28,7 @@ public class TCPDumpImpl extends PacketSniffer {
     
     try {
       nt.execute(null, out, err);
-    } catch (CommandLineException e) {
+    } catch (Exception e) {
       throw new SniffingException("exception executing commandline", e);
     }
     
@@ -68,13 +67,13 @@ public class TCPDumpImpl extends PacketSniffer {
 
   @Override
   public void startSniffing(String macAddress, EventCallback<Runnable> callback) throws SniffingException {
-    NonTerminatingCommandLine nt = new NonTerminatingCommandLine();
-    nt.setExecutable("tcpdump");
-    nt.createArg().setLine("-eqtnni eth0 ether host " + macAddress);
+    NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("tcpdump", "-eqtnni eth0 ether host " + macAddress));
+    //nt.setExecutable("tcpdump");
+    //nt.createArg().setLine("-eqtnni eth0 ether host " + macAddress);
     ReactToMacAdressStreamConsumer cons = new ReactToMacAdressStreamConsumer(macAddress, callback);
     try {
       nt.execute(null, cons, cons);
-    } catch (CommandLineException e) {
+    } catch (Exception e) {
       throw new SniffingException("exception executing commandline", e);
     }
   }
