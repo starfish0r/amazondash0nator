@@ -49,6 +49,7 @@ public class DStreamPumper extends AbstractStreamHandler {
     int count = -1;
     try {
       while(true){
+        System.out.println("1");
         while(inStream.available()==0){
           Util.threadSleep(10l);
         }
@@ -56,9 +57,11 @@ public class DStreamPumper extends AbstractStreamHandler {
         if((count = inReader.read(buf)) == -1){
           break;
         }
+        System.out.println("2");
         //this assumes a whole line is read... i know.
         String strRead = new String(Arrays.copyOfRange(buf, 0, count));
         System.out.println(strRead);
+        System.out.println("3");
         /*String[] lines = strRead.split("\\r?\\n");
         for(String line:lines){
           if (out != null) {
