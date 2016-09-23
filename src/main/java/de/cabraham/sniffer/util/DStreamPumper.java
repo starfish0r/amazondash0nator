@@ -21,32 +21,28 @@ public class DStreamPumper extends AbstractStreamHandler {
 
   private static final int SIZE = 80;
 
-  public DStreamPumper( InputStream in )
-      {
-          this( in, (StreamConsumer) null );
-      }
+  public DStreamPumper(InputStream in) {
+    this(in, (StreamConsumer) null);
+  }
 
-  public DStreamPumper( InputStream in, StreamConsumer consumer )
-      {
-          this( in, null, consumer );
-      }
+  public DStreamPumper(InputStream in, StreamConsumer consumer) {
+    this(in, null, consumer);
+  }
 
-  public DStreamPumper( InputStream in, PrintWriter writer )
-      {
-          this( in, writer, null );
-      }
+  public DStreamPumper(InputStream in, PrintWriter writer) {
+    this(in, writer, null);
+  }
 
-  public DStreamPumper( InputStream in, PrintWriter writer, StreamConsumer consumer )
-      {
-          this.in = new BufferedReader( new InputStreamReader( in ), SIZE );
-          this.out = writer;
-          this.consumer = consumer;
-      }
+  public DStreamPumper(InputStream in, PrintWriter writer, StreamConsumer consumer) {
+    this.in = new BufferedReader(new InputStreamReader(in), SIZE);
+    this.out = writer;
+    this.consumer = consumer;
+  }
 
   public void run() {
     try {
       for (String line = in.readLine(); line != null; line = in.readLine()) {
-        System.out.println("[d] read a line: "+line);
+        System.out.println("[d] read a line: " + line);
         try {
           if (exception == null) {
             consumeLine(line);

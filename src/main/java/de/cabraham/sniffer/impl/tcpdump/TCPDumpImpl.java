@@ -44,6 +44,11 @@ public class TCPDumpImpl extends PacketSniffer {
   }
 
   private String chooseOne(Set<String> capturedMacs) {
+    if(capturedMacs.isEmpty()){
+      System.out.println("No mac adresses could be found. Please restart the process and wait for packets.");
+      return null;
+    }
+    
     List<String> l = new ArrayList<>();
     for(String mac:capturedMacs){
       l.add(mac);
