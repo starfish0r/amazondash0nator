@@ -46,7 +46,4 @@ public class NonTerminatingProcess {
     }
   }
   
-  public void inte(){
-    m_outputPumper.interrupt();
-  }
 }

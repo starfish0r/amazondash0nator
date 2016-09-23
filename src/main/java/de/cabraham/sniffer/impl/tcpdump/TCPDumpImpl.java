@@ -37,16 +37,6 @@ public class TCPDumpImpl extends PacketSniffer {
     
     do {
       System.out.println("type stop to stop");
-      try {
-        while(System.in.available()==0){
-          Thread.yield();
-          Util.threadSleep(1000l);
-          System.out.println("y");
-          nt.inte();
-        }
-      } catch (IOException e) {
-        throw new SniffingException(null, e);
-      }
     } while(nt.isAlive() && !getStdIn().nextLine().equals("stop"));
     nt.terminate();
     

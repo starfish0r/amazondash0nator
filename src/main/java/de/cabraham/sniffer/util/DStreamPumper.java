@@ -1,5 +1,6 @@
 package de.cabraham.sniffer.util;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -11,13 +12,15 @@ import org.codehaus.plexus.util.cli.AbstractStreamHandler;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 
 public class DStreamPumper extends AbstractStreamHandler {
-  private final InputStreamReader in;
+  private final BufferedReader inReader;
 
   private final StreamConsumer consumer;
 
   private final PrintWriter out;
 
   private volatile Exception exception = null;
+
+  private InputStream inStream;
 
   private static final int SIZE = 1024;
 
@@ -34,7 +37,8 @@ public class DStreamPumper extends AbstractStreamHandler {
   }
 
   public DStreamPumper(InputStream in, PrintWriter writer, StreamConsumer consumer) {
-    this.in = /*new BufferedReader(*/new InputStreamReader(in)/*, SIZE)*/;
+    this.inStream = in;
+    this.inReader = new BufferedReader(new InputStreamReader(in), SIZE);
     this.out = writer;
     this.consumer = consumer;
     setDaemon(true);
@@ -44,7 +48,13 @@ public class DStreamPumper extends AbstractStreamHandler {
     char[] buf = new char[SIZE];
     int count = -1;
     try {
-      while((count = in.read(buf)) != -1){
+      while(true){
+        while(inStream.available()==0){
+          Util.threadSleep(10l);
+        }
+        if((count = inReader.read(buf)) == -1){
+          break;
+        }
         //this assumes a whole line is read... i know.
         String strRead = new String(Arrays.copyOfRange(buf, 0, count));
         System.out.println(strRead);
@@ -78,7 +88,7 @@ public class DStreamPumper extends AbstractStreamHandler {
       e.printStackTrace();
       exception = e;
     } finally {
-      IOUtil.close(in);
+      IOUtil.close(inReader);
       synchronized (this) {
         setDone();
         this.notifyAll();
