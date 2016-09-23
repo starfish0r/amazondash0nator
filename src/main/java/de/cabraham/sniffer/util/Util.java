@@ -30,10 +30,15 @@ public class Util {
 
   public static void saveProperties() {
     try {
-      m_props.store(new FileWriter(S_PROPERTIES_FILENAME), "properties for the amazondash0rnator");
+      m_props.store(new FileWriter(S_PROPERTIES_FILENAME), "properties for the amazondash0nator");
     } catch (IOException e) {
       e.printStackTrace();
     }
+  }
+  
+  public static void setAndSaveProperty(String key, String value){
+    getProperties().setProperty(key, value);
+    saveProperties();
   }
   
   public static String macAddresstoString(byte[] bytes) {

@@ -46,6 +46,7 @@ public class DStreamPumper extends AbstractStreamHandler {
   public void run() {
     try {
       for (String line = in.readLine(); line != null; line = in.readLine()) {
+        System.out.println("[d] read a line: "+line);
         try {
           if (exception == null) {
             consumeLine(line);
@@ -61,6 +62,7 @@ public class DStreamPumper extends AbstractStreamHandler {
         }
       }
     } catch (IOException e) {
+      e.printStackTrace();
       exception = e;
     } finally {
       IOUtil.close(in);

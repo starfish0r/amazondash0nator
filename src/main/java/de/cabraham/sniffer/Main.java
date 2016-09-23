@@ -80,7 +80,7 @@ public class Main {
       pick = m_stdIn.nextInt();
     } while(pick <0 || pick >= arrImpls.length);
     SniffingImplementations pickedImpl = arrImpls[pick];
-    Util.getProperties().setProperty("sniffingImpl", pickedImpl.name());
+    Util.setAndSaveProperty("sniffingImpl", pickedImpl.name());
     return pickedImpl;
   }
   

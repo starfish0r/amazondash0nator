@@ -1,6 +1,9 @@
 package de.cabraham.sniffer.util;
 
+import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.UnsupportedEncodingException;
 
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.Commandline;
@@ -26,7 +29,15 @@ public class NonTerminatingCommandLine extends Commandline {
     m_nonTerminatingProcess = this.execute();
   
     m_inputFeeder = systemIn != null ? new StreamFeeder(systemIn, m_nonTerminatingProcess.getOutputStream()) : null;
-    m_outputPumper = new DStreamPumper(m_nonTerminatingProcess.getInputStream(), systemOut);
+    try {
+      m_outputPumper = new DStreamPumper(m_nonTerminatingProcess.getInputStream(), new PrintWriter("procOut.txt", "UTF-8"), systemOut);
+    } catch (FileNotFoundException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    } catch (UnsupportedEncodingException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
     m_errorPumper = new DStreamPumper(m_nonTerminatingProcess.getErrorStream(), systemErr);
 
     if (m_inputFeeder != null) {
