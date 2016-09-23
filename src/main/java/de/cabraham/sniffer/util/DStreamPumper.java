@@ -58,14 +58,14 @@ public class DStreamPumper extends AbstractStreamHandler {
         //this assumes a whole line is read... i know.
         String strRead = new String(Arrays.copyOfRange(buf, 0, count));
         System.out.println(strRead);
-        String[] lines = strRead.split("\\r?\\n");
+        /*String[] lines = strRead.split("\\r?\\n");
         for(String line:lines){
           if (out != null) {
             out.println(line);
             out.flush();
           }
           consumeLine(line);
-        }
+        }*/
       }
       
       /*for (String line = in.readLine(); line != null; line = in.readLine()) {
