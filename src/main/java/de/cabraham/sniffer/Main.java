@@ -62,7 +62,12 @@ public class Main {
     String impl = Util.getProperties().getProperty("sniffingImpl", null);
     
     if(impl != null) {
-      return SniffingImplementations.valueOf(impl);
+      try {
+        return SniffingImplementations.valueOf(impl);
+      } catch (Exception e) {
+        //invalid value in settings
+        System.err.println("invalid value '"+impl+"' for key sniffingImpl");
+      }
     } 
 
     int pick = -1;
@@ -74,7 +79,9 @@ public class Main {
       }
       pick = m_stdIn.nextInt();
     } while(pick <0 || pick >= arrImpls.length);
-    return arrImpls[pick];
+    SniffingImplementations pickedImpl = arrImpls[pick];
+    Util.getProperties().setProperty("sniffingImpl", pickedImpl.name());
+    return pickedImpl;
   }
   
   enum SniffingImplementations {
