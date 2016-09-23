@@ -25,10 +25,11 @@ public class TCPDumpImpl extends PacketSniffer {
     nt.createArg().setValue("eth0");
     nt.createArg().setValue("arp");*/
 
-    FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[tcpdump] ");
+    FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[out] ");
+    FilterMacAdressStreamConsumer err = new FilterMacAdressStreamConsumer("[err] ");
     
     try {
-      nt.execute(null, out, out);
+      nt.execute(null, out, err);
     } catch (CommandLineException e) {
       throw new SniffingException("exception executing commandline", e);
     }

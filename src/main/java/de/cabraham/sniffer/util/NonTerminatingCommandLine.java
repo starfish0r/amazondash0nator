@@ -29,15 +29,7 @@ public class NonTerminatingCommandLine extends Commandline {
     m_nonTerminatingProcess = this.execute();
   
     m_inputFeeder = systemIn != null ? new StreamFeeder(systemIn, m_nonTerminatingProcess.getOutputStream()) : null;
-    try {
-      m_outputPumper = new DStreamPumper(m_nonTerminatingProcess.getInputStream(), new PrintWriter("procOut.txt", "UTF-8"), systemOut);
-    } catch (FileNotFoundException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    } catch (UnsupportedEncodingException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
-    }
+    m_outputPumper = new DStreamPumper(m_nonTerminatingProcess.getInputStream(), systemOut);
     m_errorPumper = new DStreamPumper(m_nonTerminatingProcess.getErrorStream(), systemErr);
 
     if (m_inputFeeder != null) {

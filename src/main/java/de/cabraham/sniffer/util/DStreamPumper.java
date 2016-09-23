@@ -1,15 +1,14 @@
 package de.cabraham.sniffer.util;
 
-import org.codehaus.plexus.util.IOUtil;
-import org.codehaus.plexus.util.cli.AbstractStreamHandler;
-import org.codehaus.plexus.util.cli.StreamConsumer;
-
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.Arrays;
+
+import org.codehaus.plexus.util.IOUtil;
+import org.codehaus.plexus.util.cli.AbstractStreamHandler;
+import org.codehaus.plexus.util.cli.StreamConsumer;
 
 public class DStreamPumper extends AbstractStreamHandler {
   private final InputStreamReader in;

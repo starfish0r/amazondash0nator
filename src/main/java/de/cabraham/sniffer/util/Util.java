@@ -40,7 +40,11 @@ public class Util {
   }
   
   public static void setAndSaveProperty(String key, String value){
-    getProperties().setProperty(key, value);
+    if(value == null){
+      getProperties().remove(key);
+    } else {
+      getProperties().setProperty(key, value);
+    }
     saveProperties();
   }
   
