@@ -1,5 +1,6 @@
 package de.cabraham.sniffer.impl.tcpdump;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,9 +28,10 @@ public class TCPDumpImpl extends PacketSniffer {
 
     FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[out] ");
     FilterMacAdressStreamConsumer err = new FilterMacAdressStreamConsumer("[err] ");
+    ByteArrayInputStream bis = new ByteArrayInputStream("tard\n\n\n\n\n".getBytes());
     
     try {
-      nt.execute(null, out, err);
+      nt.execute(bis, out, err);
     } catch (Exception e) {
       throw new SniffingException("exception executing commandline", e);
     }

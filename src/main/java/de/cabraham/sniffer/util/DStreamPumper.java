@@ -49,7 +49,6 @@ public class DStreamPumper extends AbstractStreamHandler {
     int count = -1;
     try {
       while(true){
-        inStream.notifyAll();
         while(inStream.available()==0){
           Util.threadSleep(10l);
         }
