@@ -57,7 +57,7 @@ public class DStreamPumper extends AbstractStreamHandler {
       }*/
       
       for (String line = in.readLine(); line != null; line = in.readLine()) {
-        System.out.println("[d] read a line: " + line);
+        System.out.println("[d] " + line);
         try {
           if (exception == null) {
             consumeLine(line);
@@ -99,8 +99,7 @@ public class DStreamPumper extends AbstractStreamHandler {
   }
 
   private void consumeLine(String line) {
-    System.out.println("disabled="+isDisabled()+", line="+line+", consumer="+consumer);
-    
+    //System.out.println("disabled="+isDisabled()+", line="+line+", consumer="+consumer);
     if (consumer != null && !isDisabled()) {
       consumer.consumeLine(line);
     }
