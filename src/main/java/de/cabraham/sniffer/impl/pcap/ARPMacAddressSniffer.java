@@ -6,7 +6,6 @@ import org.jnetpcap.packet.PcapPacket;
 import org.jnetpcap.packet.PcapPacketHandler;
 import org.jnetpcap.protocol.network.Arp;
 
-import de.cabraham.sniffer.MakeItStopException;
 import de.cabraham.sniffer.util.Util;
 
 final class ARPMacAddressSniffer implements PcapPacketHandler<String> {
