@@ -45,8 +45,8 @@ public class DStreamPumper extends AbstractStreamHandler {
   }
 
   public void run() {
-    char[] buf = new char[SIZE];
-    int count = -1;
+    /*char[] buf = new char[SIZE];
+    int count = -1;*/
     try {
       /*while(true){
         //System.out.println(inStream+" "+inStream.getClass().getName());

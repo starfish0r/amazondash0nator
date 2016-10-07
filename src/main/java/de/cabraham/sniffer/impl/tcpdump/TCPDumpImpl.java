@@ -15,29 +15,23 @@ import de.cabraham.sniffer.util.NonTerminatingProcess;
 import de.cabraham.sniffer.util.Util;
 
 public class TCPDumpImpl extends PacketSniffer {
+  
+  private static final String PLACEHOLDER_MAC = "%mac%";
+  private static final List<String> CMD_FilterAllMacs = Arrays.asList("bash", "-c", "/usr/sbin/tcpdump -l -eqtnn -i eth0 arp");
+  private static final List<String> CMD_FilterSpecificMac = Arrays.asList("bash", "-c", "/usr/sbin/tcpdump -l -eqtnn -i eth0 ether host "+PLACEHOLDER_MAC);
 
   @Override
   public String chooseMacAdress() throws SniffingException {
-    //NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("tcpdump", "-eqtnni", "eth0", "arp", ">", "/home/bananapi/tcpdumplog.log"));
-    NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList(/*"bash", "-c", */"/usr/sbin/tcpdump -l -eqtnn -i eth0 arp"));
-    
-    //NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("ping", "google.de"));
-    /*nt.setExecutable("tcpdump");
-    nt.createArg().setLine("-eqtnni eth0 arp");*/
-    /*nt.setExecutable("ping");
-    nt.createArg().setLine("google.de");*/
-    
+    NonTerminatingProcess nt = new NonTerminatingProcess(CMD_FilterAllMacs);
 
     FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[out] ");
     FilterMacAdressStreamConsumer err = new FilterMacAdressStreamConsumer("[err] ");
-    //ByteArrayInputStream bis = new ByteArrayInputStream("tard\n\n\n\n\n".getBytes());
     
     try {
       nt.execute(null, out, err);
     } catch (Exception e) {
-      throw new SniffingException("exception executing commandline", e);
+      throw new SniffingException("Exception executing commandline", e);
     }
-    
     
     do {
       System.out.println("type stop to stop");
@@ -74,15 +68,25 @@ public class TCPDumpImpl extends PacketSniffer {
 
   @Override
   public void startSniffing(String macAddress, EventCallback<Runnable> callback) throws SniffingException {
-    NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("tcpdump", "-elqtnni eth0 ether host " + macAddress));
-    //nt.setExecutable("tcpdump");
-    //nt.createArg().setLine("-eqtnni eth0 ether host " + macAddress);
+    List<String> cmd = replaceVariableWithValue(CMD_FilterSpecificMac, macAddress);
+    NonTerminatingProcess nt = new NonTerminatingProcess(cmd);
+    
     ReactToMacAdressStreamConsumer cons = new ReactToMacAdressStreamConsumer(macAddress, callback);
     try {
-      nt.execute(null, cons, cons);
+      nt.execute(null, cons, null);
     } catch (Exception e) {
       throw new SniffingException("exception executing commandline", e);
     }
+  }
+
+  private List<String> replaceVariableWithValue(List<String> list, String macAddress) {
+    for(int i=0;i<list.size();i++){
+      String elm = list.get(i);
+      if(elm.contains(PLACEHOLDER_MAC)){
+        list.set(i, elm.replace(PLACEHOLDER_MAC, macAddress));
+      }
+    }
+    return list;
   }
 
   public static void main(String[] args) throws SniffingException {
