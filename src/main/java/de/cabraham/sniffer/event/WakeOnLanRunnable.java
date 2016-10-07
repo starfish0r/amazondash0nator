@@ -4,12 +4,15 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 
+import de.cabraham.sniffer.util.Logger;
+import de.cabraham.sniffer.util.Util;
+
 public class WakeOnLanRunnable implements Runnable {
 
   private static final int PORT = 9;
   private static final String IPNETWORK = "192.168.1.255"; // todo: to config file
 
-  private String m_macAdress = "74 D4 35 FE A9 60";
+  
 
   private static byte[] getMacBytes(String macStr) throws IllegalArgumentException {
     byte[] bytes = new byte[6];
@@ -29,9 +32,15 @@ public class WakeOnLanRunnable implements Runnable {
 
   @Override
   public void run() {
-    System.out.println("sending wol to " + m_macAdress);
+    String wolMacAdress = Util.getProperties().getProperty("wolTargetMac");//"74 D4 35 FE A9 60";
+    if(wolMacAdress == null) {
+      Logger.output("wol mac not configured. Place it in the settings.properties using the name wolTargetMac");
+    } else {
+      wolMacAdress = wolMacAdress.trim();
+    }
+    Logger.debug("sending wol to " + wolMacAdress);
     try {
-      byte[] macBytes = getMacBytes(m_macAdress);
+      byte[] macBytes = getMacBytes(wolMacAdress);
       byte[] bytes = new byte[6 + 16 * macBytes.length];
       for (int i = 0; i < 6; i++) {
         bytes[i] = (byte) 0xff;
@@ -46,10 +55,9 @@ public class WakeOnLanRunnable implements Runnable {
       socket.send(packet);
       socket.close();
 
-      System.out.println("Wake-on-LAN packet sent.");
+      Logger.output("Wake-on-LAN packet sent.");
     } catch (Exception e) {
-      System.out.println("Failed to send Wake-on-LAN packet");
-      e.printStackTrace();
+      Logger.error("Failed to send Wake-on-LAN packet", e);
     }
   }
 

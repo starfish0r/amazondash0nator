@@ -6,7 +6,7 @@ import org.jnetpcap.packet.PcapPacket;
 import org.jnetpcap.packet.PcapPacketHandler;
 import org.jnetpcap.protocol.network.Arp;
 
-import de.cabraham.sniffer.event.EventCallback;
+import de.cabraham.sniffer.event.EventCallbackRunnable;
 import de.cabraham.sniffer.util.Util;
 
 public final class ARPMacAddressPcapPacketHandler implements PcapPacketHandler<String> {
@@ -14,7 +14,7 @@ public final class ARPMacAddressPcapPacketHandler implements PcapPacketHandler<S
   
   private final Arp arp = new Arp();
   private final String m_macAdress;
-  private EventCallback<Runnable> m_callback;
+  private EventCallbackRunnable<Runnable> m_callback;
   
   static{
     dict.put("74 D4 35 FE A9 60", "starfish2");
@@ -24,7 +24,7 @@ public final class ARPMacAddressPcapPacketHandler implements PcapPacketHandler<S
   }
   
 
-  public ARPMacAddressPcapPacketHandler(String macAdress, EventCallback<Runnable> callback) {
+  public ARPMacAddressPcapPacketHandler(String macAdress, EventCallbackRunnable<Runnable> callback) {
     m_macAdress = macAdress;
     m_callback = callback;
   }

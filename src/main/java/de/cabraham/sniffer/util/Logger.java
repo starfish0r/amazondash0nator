@@ -14,7 +14,7 @@ public class Logger {
   
   public static void debug(String str){
     if(s_debug){
-      System.out.println(str);
+      System.out.println("[D] "+str);
     }
   }
 

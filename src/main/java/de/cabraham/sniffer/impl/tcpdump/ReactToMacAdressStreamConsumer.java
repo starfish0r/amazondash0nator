@@ -4,16 +4,16 @@ import java.util.regex.Matcher;
 
 import org.codehaus.plexus.util.cli.StreamConsumer;
 
-import de.cabraham.sniffer.event.EventCallback;
+import de.cabraham.sniffer.event.EventCallbackRunnable;
 import de.cabraham.sniffer.util.Logger;
 import de.cabraham.sniffer.util.Util;
 
 public class ReactToMacAdressStreamConsumer implements StreamConsumer {
 
   private final String m_macAddress;
-  private final EventCallback<Runnable> m_callback;
+  private final EventCallbackRunnable<Runnable> m_callback;
 
-  public ReactToMacAdressStreamConsumer(String macAddress, EventCallback<Runnable> callback) {
+  public ReactToMacAdressStreamConsumer(String macAddress, EventCallbackRunnable<Runnable> callback) {
     m_macAddress = macAddress;
     m_callback = callback;
   }

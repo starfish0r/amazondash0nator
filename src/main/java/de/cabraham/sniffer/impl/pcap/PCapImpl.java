@@ -9,7 +9,7 @@ import org.jnetpcap.Pcap;
 import org.jnetpcap.PcapIf;
 
 import de.cabraham.sniffer.SniffingException;
-import de.cabraham.sniffer.event.EventCallback;
+import de.cabraham.sniffer.event.EventCallbackRunnable;
 import de.cabraham.sniffer.impl.PacketSniffer;
 import de.cabraham.sniffer.util.Util;
 
@@ -26,7 +26,7 @@ public class PCapImpl extends PacketSniffer {
   }
 
   @Override
-  public void startSniffing(String macAddress, EventCallback<Runnable> callback) throws SniffingException {
+  public void startSniffing(String macAddress, EventCallbackRunnable<Runnable> callback) throws SniffingException {
     String interfaceName = getInterfaceName();
     startMainSniffingLoop(interfaceName, macAddress, callback);
   }
@@ -47,7 +47,7 @@ public class PCapImpl extends PacketSniffer {
 
   
   
-  private void startMainSniffingLoop(String interfaceName, String macAdress, EventCallback<Runnable> callback) throws SniffingException {
+  private void startMainSniffingLoop(String interfaceName, String macAdress, EventCallbackRunnable<Runnable> callback) throws SniffingException {
     Pcap pcap = openPcap(interfaceName);
     Thread t = new Thread(new Runnable() {
       @Override

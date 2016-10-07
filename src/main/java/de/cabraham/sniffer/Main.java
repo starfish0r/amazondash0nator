@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
 
-import de.cabraham.sniffer.event.EventCallback;
+import de.cabraham.sniffer.event.EventCallbackRunnable;
 import de.cabraham.sniffer.event.WakeOnLanRunnable;
 import de.cabraham.sniffer.impl.PacketSniffer;
 import de.cabraham.sniffer.impl.pcap.PCapImpl;
@@ -35,14 +35,12 @@ public class Main {
     PacketSniffer impl = null;
     try {
       impl = chosen.getImplementationClass().newInstance();
-    } catch (InstantiationException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
+    } catch (Exception e) {
+      Logger.error("Cannot instantiate class", e);
+      return;
     }
     
     impl.setStdIn(m_stdIn);
-    
     String macAdress = Util.getProperties().getProperty("dashMacAdress", null);
     if(macAdress==null){
       String mac = impl.chooseMacAdress();
@@ -51,12 +49,12 @@ public class Main {
     
     macAdress = Util.getProperties().getProperty("dashMacAdress", null);
     if(macAdress==null){
-      System.out.println("There's no dash mac adress :/");
+      Logger.output("There's no dash mac adress :/");
     } else {
-      impl.startSniffing(macAdress, new EventCallback<Runnable>(new WakeOnLanRunnable()));
+      impl.startSniffing(macAdress, new EventCallbackRunnable<Runnable>(new WakeOnLanRunnable()));
     }
     
-    System.out.println("bye!");
+    Logger.output("bye!");
   }
 
   private SniffingImplementations chooseImpl() {
@@ -67,14 +65,14 @@ public class Main {
         return SniffingImplementations.valueOf(impl);
       } catch (Exception e) {
         //invalid value in settings
-        System.err.println("invalid value '"+impl+"' for key sniffingImpl");
+        Logger.output("invalid value '"+impl+"' for key sniffingImpl");
       }
     } 
 
     int pick = -1;
     SniffingImplementations[] arrImpls = SniffingImplementations.values();
     do {
-      System.out.println("Please choose how packets will be sniffed:");
+      Logger.output("Please choose how packets will be sniffed:");
       for(int i=0;i<arrImpls.length;i++){
         System.out.println("#"+i+": "+arrImpls[i]);
       }

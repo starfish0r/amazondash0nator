@@ -3,11 +3,11 @@ package de.cabraham.sniffer.event;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class EventCallback<T extends Runnable>{
+public class EventCallbackRunnable<T extends Runnable>{
   private static final ExecutorService s = Executors.newCachedThreadPool();
   
   private final T m_job;
-  public EventCallback(T job){
+  public EventCallbackRunnable(T job){
     m_job = job;
   }
   

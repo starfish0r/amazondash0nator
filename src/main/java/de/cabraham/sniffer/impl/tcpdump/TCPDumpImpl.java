@@ -9,8 +9,9 @@ import java.util.Scanner;
 import java.util.Set;
 
 import de.cabraham.sniffer.SniffingException;
-import de.cabraham.sniffer.event.EventCallback;
+import de.cabraham.sniffer.event.EventCallbackRunnable;
 import de.cabraham.sniffer.impl.PacketSniffer;
+import de.cabraham.sniffer.util.Logger;
 import de.cabraham.sniffer.util.NonTerminatingProcess;
 import de.cabraham.sniffer.util.Util;
 
@@ -22,10 +23,12 @@ public class TCPDumpImpl extends PacketSniffer {
 
   @Override
   public String chooseMacAdress() throws SniffingException {
+    Logger.output("tcpdump will filter all mac adresses that are part of arp traffic. Wait until your dash mac shows up.");
+    
     NonTerminatingProcess nt = new NonTerminatingProcess(CMD_FilterAllMacs);
 
-    FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[out] ");
-    FilterMacAdressStreamConsumer err = new FilterMacAdressStreamConsumer("[err] ");
+    FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[tcpdump] ");
+    FilterMacAdressStreamConsumer err = new FilterMacAdressStreamConsumer("[tcpderr] ");
     
     try {
       nt.execute(null, out, err);
@@ -34,18 +37,19 @@ public class TCPDumpImpl extends PacketSniffer {
     }
     
     do {
-      System.out.println("type stop to stop");
+      Logger.output("type stop to stop!");
     } while(nt.isAlive() && !getStdIn().nextLine().equals("stop"));
     nt.terminate();
     
     Util.threadSleep(1000L);
+    System.out.println();
     System.out.println();
     return chooseOne(out.getCapturedMacs());
   }
 
   private String chooseOne(Set<String> capturedMacs) {
     if(capturedMacs.isEmpty()){
-      System.out.println("No mac adresses could be found. Please restart the process and wait for packets.");
+      Logger.output("No mac adresses could be found. Please restart the process and wait for packets.");
       return null;
     }
     
@@ -54,7 +58,7 @@ public class TCPDumpImpl extends PacketSniffer {
       l.add(mac);
     }
     
-    System.out.println("The following mac adresses have been found. Pick one:");
+    Logger.output("The following mac adresses have been found. Pick one:");
     int i = 0;
     for(String mac:l){
       System.out.println("#"+(i++)+": "+mac);
@@ -67,7 +71,7 @@ public class TCPDumpImpl extends PacketSniffer {
   }
 
   @Override
-  public void startSniffing(String macAddress, EventCallback<Runnable> callback) throws SniffingException {
+  public void startSniffing(String macAddress, EventCallbackRunnable<Runnable> callback) throws SniffingException {
     List<String> cmd = replaceVariableWithValue(CMD_FilterSpecificMac, macAddress);
     NonTerminatingProcess nt = new NonTerminatingProcess(cmd);
     
