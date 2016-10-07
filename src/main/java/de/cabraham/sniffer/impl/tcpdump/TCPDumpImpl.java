@@ -19,7 +19,7 @@ public class TCPDumpImpl extends PacketSniffer {
   @Override
   public String chooseMacAdress() throws SniffingException {
     //NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("tcpdump", "-eqtnni", "eth0", "arp", ">", "/home/bananapi/tcpdumplog.log"));
-    NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("bash", "-c", "/usr/sbin/tcpdump -l -eqtnn -i eth0 arp")); // > /home/bananapi/tcpdumplog.log"
+    NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList(/*"bash", "-c", */"/usr/sbin/tcpdump -l -eqtnn -i eth0 arp"));
     
     //NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("ping", "google.de"));
     /*nt.setExecutable("tcpdump");
@@ -74,7 +74,7 @@ public class TCPDumpImpl extends PacketSniffer {
 
   @Override
   public void startSniffing(String macAddress, EventCallback<Runnable> callback) throws SniffingException {
-    NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("tcpdump", "-eqtnni eth0 ether host " + macAddress));
+    NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("tcpdump", "-elqtnni eth0 ether host " + macAddress));
     //nt.setExecutable("tcpdump");
     //nt.createArg().setLine("-eqtnni eth0 ether host " + macAddress);
     ReactToMacAdressStreamConsumer cons = new ReactToMacAdressStreamConsumer(macAddress, callback);
