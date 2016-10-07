@@ -48,20 +48,20 @@ public class DStreamPumper extends AbstractStreamHandler {
     char[] buf = new char[SIZE];
     int count = -1;
     try {
-      while(true){
+      /*while(true){
         //System.out.println(inStream+" "+inStream.getClass().getName());
-        /*while(true){
+        while(true){
           System.out.println("available: "+inStream.available());
           Util.threadSleep(1000l);
           if(inStream.available() > 10000){
             break;
           }
-        }*/
+        }
         
         //System.out.println("1");
-        /*while(inStream.available()==0){
+        while(inStream.available()==0){
           Util.threadSleep(10l);
-        }*/
+        }
         System.out.println("available: "+inStream.available());
         if((count = inReader.read(buf)) == -1){
           break;
@@ -71,17 +71,17 @@ public class DStreamPumper extends AbstractStreamHandler {
         String strRead = new String(Arrays.copyOfRange(buf, 0, count));
         System.out.println(strRead);
         System.out.println("3");
-        /*String[] lines = strRead.split("\\r?\\n");
+        String[] lines = strRead.split("\\r?\\n");
         for(String line:lines){
           if (out != null) {
             out.println(line);
             out.flush();
           }
           consumeLine(line);
-        }*/
-      }
+        }
+      }*/
       
-      /*for (String line = in.readLine(); line != null; line = in.readLine()) {
+      for (String line = inReader.readLine(); line != null; line = inReader.readLine()) {
         System.out.println("[d] " + line);
         try {
           if (exception == null) {
@@ -96,7 +96,7 @@ public class DStreamPumper extends AbstractStreamHandler {
           out.println(line);
           out.flush();
         }
-      }*/
+      }
     } catch (IOException e) {
       e.printStackTrace();
       exception = e;

@@ -18,7 +18,9 @@ public class TCPDumpImpl extends PacketSniffer {
 
   @Override
   public String chooseMacAdress() throws SniffingException {
-    NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("tcpdump", "-eqtnni", "eth0", "arp", ">", "/home/bananapi/tcpdumplog.log"));
+    //NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("tcpdump", "-eqtnni", "eth0", "arp", ">", "/home/bananapi/tcpdumplog.log"));
+    NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("bash", "-c", "tcpdump -eqtnni eth0 arp > /home/bananapi/tcpdumplog.log"));
+    
     //NonTerminatingProcess nt = new NonTerminatingProcess(Arrays.asList("ping", "google.de"));
     /*nt.setExecutable("tcpdump");
     nt.createArg().setLine("-eqtnni eth0 arp");*/
@@ -28,7 +30,7 @@ public class TCPDumpImpl extends PacketSniffer {
 
     FilterMacAdressStreamConsumer out = new FilterMacAdressStreamConsumer("[out] ");
     FilterMacAdressStreamConsumer err = new FilterMacAdressStreamConsumer("[err] ");
-    ByteArrayInputStream bis = new ByteArrayInputStream("tard\n\n\n\n\n".getBytes());
+    //ByteArrayInputStream bis = new ByteArrayInputStream("tard\n\n\n\n\n".getBytes());
     
     try {
       nt.execute(null, out, err);
