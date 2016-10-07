@@ -9,13 +9,22 @@ public class Logger {
   }
   
   public static void log(String str){
-    System.out.println(str);
+    output(str);
   }
   
   public static void debug(String str){
     if(s_debug){
       System.out.println(str);
     }
+  }
+
+  public static void output(String str) {
+    System.out.println(str);
+  }
+
+  public static void error(String string, Exception e) {
+    System.out.println(string);
+    e.printStackTrace(System.out);
   }
 
 }

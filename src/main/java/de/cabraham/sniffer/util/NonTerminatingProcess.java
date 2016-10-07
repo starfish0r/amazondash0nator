@@ -7,11 +7,13 @@ import java.util.List;
 import org.codehaus.plexus.util.cli.CommandLineException;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 import org.codehaus.plexus.util.cli.StreamFeeder;
+import org.codehaus.plexus.util.cli.StreamPumper;
 
 public class NonTerminatingProcess {
   private Process m_nonTerminatingProcess;
   private StreamFeeder m_inputFeeder;
-  private DStreamPumper m_outputPumper, m_errorPumper;
+  private StreamPumper m_outputPumper;
+  private StreamPumper m_errorPumper;
   private List<String> m_command;
   
   public NonTerminatingProcess(List<String> command){
@@ -28,13 +30,13 @@ public class NonTerminatingProcess {
     return m_nonTerminatingProcess.isAlive();
   }
   
-  public void execute(final InputStream inStream, final StreamConsumer outStream, final StreamConsumer errStream) throws CommandLineException, IOException {
+  public void execute(final InputStream inStream, final StreamConsumer outConsumer, final StreamConsumer errConsumer) throws CommandLineException, IOException {
     Logger.debug("Running "+m_command.toString());
     m_nonTerminatingProcess = new ProcessBuilder(m_command).redirectErrorStream(true).start();
   
     m_inputFeeder = inStream != null ? new StreamFeeder(inStream, m_nonTerminatingProcess.getOutputStream()) : null;
-    m_outputPumper = new DStreamPumper(m_nonTerminatingProcess.getInputStream(), outStream);
-    m_errorPumper = new DStreamPumper(m_nonTerminatingProcess.getErrorStream(), errStream);
+    m_outputPumper = new StreamPumper(m_nonTerminatingProcess.getInputStream(), outConsumer);
+    m_errorPumper = new StreamPumper(m_nonTerminatingProcess.getErrorStream(), errConsumer);
 
     if (m_inputFeeder != null) {
       m_inputFeeder.start();

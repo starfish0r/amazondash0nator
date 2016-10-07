@@ -5,6 +5,7 @@ import java.util.regex.Matcher;
 import org.codehaus.plexus.util.cli.StreamConsumer;
 
 import de.cabraham.sniffer.event.EventCallback;
+import de.cabraham.sniffer.util.Logger;
 import de.cabraham.sniffer.util.Util;
 
 public class ReactToMacAdressStreamConsumer implements StreamConsumer {
@@ -22,8 +23,14 @@ public class ReactToMacAdressStreamConsumer implements StreamConsumer {
     Matcher m = Util.PATTERN_MAC_ADDRESS.matcher(line);
     while(m.find()){
       String standardMac = Util.toStandardMac(m.group(0));
+      Logger.debug("mac sniffed: "+standardMac);
       if(m_macAddress.equals(standardMac)){
-        m_callback.callback();
+        Logger.debug("mac found! doing the thing...");
+        try {
+          m_callback.callback();
+        } catch (Exception e) {
+          Logger.error("Error executing callback", e);
+        }
       }
     }
   }

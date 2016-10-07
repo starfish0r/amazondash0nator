@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 
 import org.codehaus.plexus.util.cli.StreamConsumer;
 
+import de.cabraham.sniffer.util.Logger;
 import de.cabraham.sniffer.util.Util;
 
 public class FilterMacAdressStreamConsumer implements StreamConsumer {
@@ -26,10 +27,12 @@ public class FilterMacAdressStreamConsumer implements StreamConsumer {
     Matcher m = Util.PATTERN_MAC_ADDRESS.matcher(line);
     while(m.find()){
       String mac = m.group(0);
-      m_macs.add(Util.toStandardMac(mac));
+      String standardMac = Util.toStandardMac(mac);
+      if(m_macs.add(standardMac)){
+        Logger.output("new mac: "+standardMac);
+      }
     }
-    System.out.println(m_prefix+line);
-    System.out.flush();
+    Logger.debug(m_prefix+line);
   }
   
   public Set<String> getCapturedMacs(){
