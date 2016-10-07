@@ -9,6 +9,7 @@ import de.cabraham.sniffer.event.WakeOnLanRunnable;
 import de.cabraham.sniffer.impl.PacketSniffer;
 import de.cabraham.sniffer.impl.pcap.PCapImpl;
 import de.cabraham.sniffer.impl.tcpdump.TCPDumpImpl;
+import de.cabraham.sniffer.util.Logger;
 import de.cabraham.sniffer.util.Util;
 
 
@@ -27,6 +28,7 @@ public class Main {
 
   public void start() throws SniffingException {
     Util.loadProperties();
+    Logger.setDebug(Boolean.valueOf(Util.getProperties().getProperty("debug", "false")));
     m_stdIn = new Scanner(System.in);
     
     SniffingImplementations chosen = chooseImpl();

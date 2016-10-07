@@ -29,6 +29,7 @@ public class NonTerminatingProcess {
   }
   
   public void execute(final InputStream inStream, final StreamConsumer outStream, final StreamConsumer errStream) throws CommandLineException, IOException {
+    Logger.debug("Running "+m_command.toString());
     m_nonTerminatingProcess = new ProcessBuilder(m_command).redirectErrorStream(true).start();
   
     m_inputFeeder = inStream != null ? new StreamFeeder(inStream, m_nonTerminatingProcess.getOutputStream()) : null;

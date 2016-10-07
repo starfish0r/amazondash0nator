@@ -49,16 +49,16 @@ public class DStreamPumper extends AbstractStreamHandler {
     int count = -1;
     try {
       while(true){
-        System.out.println(inStream+" "+inStream.getClass().getName());
-        while(true){
+        //System.out.println(inStream+" "+inStream.getClass().getName());
+        /*while(true){
           System.out.println("available: "+inStream.available());
           Util.threadSleep(1000l);
           if(inStream.available() > 10000){
             break;
           }
-        }
+        }*/
         
-        System.out.println("1");
+        //System.out.println("1");
         /*while(inStream.available()==0){
           Util.threadSleep(10l);
         }*/
