@@ -54,7 +54,7 @@ public class Main {
       impl.startSniffing(macAdress, new EventCallbackRunnable<Runnable>(new WakeOnLanRunnable()));
     }
     
-    Logger.output("bye!");
+    Logger.output("starting to sniff, looking for "+macAdress);
   }
 
   private SniffingImplementations chooseImpl() {
