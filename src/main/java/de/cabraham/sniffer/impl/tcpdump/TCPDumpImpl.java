@@ -81,6 +81,10 @@ public class TCPDumpImpl extends PacketSniffer {
     } catch (Exception e) {
       throw new SniffingException("exception executing commandline", e);
     }
+    do {
+      Logger.output("type stop or ctrl+c to stop");
+    } while(nt.isAlive() && !getStdIn().nextLine().equals("stop"));
+    nt.terminate();
   }
 
   private List<String> replaceVariableWithValue(List<String> list, String macAddress) {
