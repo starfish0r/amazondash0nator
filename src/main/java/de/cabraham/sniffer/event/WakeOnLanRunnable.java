@@ -3,6 +3,8 @@ package de.cabraham.sniffer.event;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import de.cabraham.sniffer.util.Logger;
 import de.cabraham.sniffer.util.Util;
@@ -11,7 +13,8 @@ public class WakeOnLanRunnable implements Runnable {
 
   private static final int PORT = 9;
   private static final String IPNETWORK = "192.168.1.255"; // todo: to config file
-
+  
+  private static final SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yy-HH:mm:ss");
   
 
   private static byte[] getMacBytes(String macStr) throws IllegalArgumentException {
@@ -55,10 +58,16 @@ public class WakeOnLanRunnable implements Runnable {
       socket.send(packet);
       socket.close();
 
-      Logger.output("Wake-on-LAN packet sent.");
+      Logger.output(sdf.format(new Date())+" wol packet sent to "+wolMacAdress);
     } catch (Exception e) {
       Logger.error("Failed to send Wake-on-LAN packet", e);
     }
+  }
+  
+  
+  public static void main(String[] args) {
+    
+    System.out.println(sdf.format(new Date()));
   }
 
   

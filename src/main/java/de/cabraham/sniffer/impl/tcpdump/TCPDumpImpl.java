@@ -1,7 +1,5 @@
 package de.cabraham.sniffer.impl.tcpdump;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
