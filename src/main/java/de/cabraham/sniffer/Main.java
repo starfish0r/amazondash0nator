@@ -51,10 +51,10 @@ public class Main {
     if(macAdress==null){
       Logger.output("There's no dash mac adress :/");
     } else {
+      Logger.output("starting to sniff, looking for "+macAdress);
       impl.startSniffing(macAdress, new EventCallbackRunnable<Runnable>(new WakeOnLanRunnable()));
     }
-    
-    Logger.output("starting to sniff, looking for "+macAdress);
+    Logger.output("done!");
   }
 
   private SniffingImplementations chooseImpl() {
